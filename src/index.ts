@@ -132,7 +132,7 @@ export function rewriteMdComment(
   data: Record<string, unknown>,
   /** Configuration options */
   { preserveType = false, startMarker = 'start', endMarker = 'end' }: RewriteMdCommentOptions = {},
-): string | Buffer<ArrayBufferLike> {
+): string | Buffer {
   const isBuffer = Buffer.isBuffer(input);
 
   const toString = (ctx: string | Buffer): string =>
@@ -153,6 +153,8 @@ export function rewriteMdComment(
   }
 
   for (const key in data) {
+    if (!Object.hasOwn(data, key)) continue;
+
     if (key === startMarker || key === endMarker) {
       throw new Error(`[rewrite.md] Data key \`${key}\` conflicts with marker name.`);
     }
@@ -160,6 +162,13 @@ export function rewriteMdComment(
     if (value == null) continue;
 
     const escReg = (v: string) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapeHtml = (u: string) =>
+      u
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 
     const startReg = new RegExp(`<!--\\s*${escReg(key)}:${escReg(startMarker)}\\s*-->`);
     const endReg = new RegExp(`<!--\\s*${escReg(key)}:${escReg(endMarker)}\\s*-->`);
@@ -176,7 +185,7 @@ export function rewriteMdComment(
       const startMatch = match.match(startReg);
       const endMatch = match.match(endReg);
 
-      return `${startMatch![0]}\n${value}\n${endMatch![0]}`;
+      return `${startMatch![0]}\n${escapeHtml(String(value))}\n${endMatch![0]}`;
     });
   }
 
