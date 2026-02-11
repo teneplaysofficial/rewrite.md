@@ -1,0 +1,72 @@
+{
+  "name": "rewrite.md",
+  "version": "0.0.0",
+  "description": "A programmable Markdown transformer for safe rewriting, dynamic injection, and front-matter processing",
+  "author": "Sriman",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teneplaysofficial/rewrite.md.git"
+  },
+  "keywords": [
+    "markdown",
+    "rewrite",
+    "front-matter",
+    "automation",
+    "documentation"
+  ],
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "prepare": "husky",
+    "prepublishOnly": "bun run lint && bun run build && bun run test",
+    "release": "release-hub",
+    "test": "bun test --coverage",
+    "build": "bun run scripts/build.ts && dts-bundle-generator --verbose --no-banner -o dist/index.d.ts src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check ."
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown",
+    "*.{js,ts}": "eslint --fix"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "all",
+    "tabWidth": 2
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/compat": "^2.0.2",
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.3.9",
+    "dts-bundle-generator": "^9.5.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.6.1",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "release-hub": "^1.0.0-beta.1",
+    "typescript-eslint": "^8.55.0"
+  }
+}
