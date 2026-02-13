@@ -1,6 +1,6 @@
 {
   "name": "rewrite.md",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A programmable Markdown transformer for safe rewriting, dynamic injection, and front-matter processing",
   "author": "Sriman",
   "repository": {
