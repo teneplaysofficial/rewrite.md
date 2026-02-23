@@ -1,18 +1,17 @@
-import { rewriteMdComment } from './rewriteMdComment';
-
+export * from './markdown';
+export * from './markdown.types';
 export * from './rewriteMdComment';
 export * from './rewriteMdComment.types';
 
+import * as markdownModule from './markdown';
+import * as rewriteCommentModule from './rewriteMdComment';
+
 /**
- * Namespace-style export for `rewrite.md`.
- *
- * @remarks
- * Provides a grouped object API for consumers who prefer a single entry point instead of named imports.
- *
- * @see {@link rewriteMdComment}
+ * Aggregated namespace-style API for `rewrite.md`.
  */
 export const rewriteMd = {
-  rewriteMdComment,
-};
+  ...markdownModule,
+  ...rewriteCommentModule,
+} as const;
 
 export default rewriteMd;
